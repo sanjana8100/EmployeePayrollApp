@@ -14,7 +14,7 @@ class EmployeeParollData{
             this._this=name;
         }
         else{
-            throw 'name is incorrect!';
+            throw 'Name is incorrect!';
         }
     }
 
@@ -57,7 +57,23 @@ class EmployeeParollData{
         return this._startDate;
     }
     set startDate(startDate){
-        this._startDate=startDate;
+        const inputDate = new Date(startDate);
+    if (isNaN(inputDate.getTime())) {
+        throw new Error("Invalid date format. Please use yyyy-mm-dd format.");
+    }
+    
+    const currentDate = new Date();
+    if (inputDate > currentDate) {
+        throw new Error("Start date cannot be in the future.");
+    }
+
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+    if (inputDate < this._joinDate || inputDate > currentDate) {
+        throw new Error("Start date should be within 30 days of joining.");
+    }
+
+    this._startDate = inputDate;
     }
 toString(){
     const options ={year :'numeric',month:'long',day:'numeric'}
